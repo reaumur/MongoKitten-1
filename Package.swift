@@ -1,26 +1,28 @@
+// swift-tools-version:4.0
 import PackageDescription
 
 var package = Package(
     name: "MongoKitten",
-    targets: [
-        Target(name: "GeoJSON"),
-        Target(name: "MongoSocket"),
-        Target(name: "ExtendedJSON"),
-        Target(name: "MongoKitten", dependencies: ["GeoJSON", "MongoSocket", "ExtendedJSON"])
-        ],
     dependencies: [
         // For MongoDB Documents
-        .Package(url: "https://github.com/OpenKitten/BSON.git", versions: Version(5, 2, 0) ..< Version(6, 0, 0)),
-        
+        .package(url: "https://github.com/GregPerez83/BSON.git", .upToNextMinor(from: "5.3.0")),
+
         // For ExtendedJSON support
-        .Package(url: "https://github.com/OpenKitten/Cheetah.git", majorVersion: 2),
+        .package(url: "https://github.com/GregPerez83/Cheetah.git", .upToNextMinor(from: "2.1.0")),
 
         // Authentication
-        .Package(url: "https://github.com/OpenKitten/CryptoKitten.git", majorVersion: 0, minor: 2),
+        .package(url: "https://github.com/GregPerez83/CryptoKitten.git", .upToNextMinor(from: "0.3.0")),
 
         // Asynchronous behaviour
-        .Package(url: "https://github.com/OpenKitten/Schrodinger.git", majorVersion: 1),
-    ]
+        .package(url: "https://github.com/GregPerez83/Schrodinger.git", .upToNextMinor(from: "1.1.0")),
+    ],
+    targets: [
+        .target(name: "GeoJSON", dependencies: ["BSON"]),
+        .target(name: "MongoSocket", dependencies: []),
+        .target(name: "ExtendedJSON", dependencies: ["GeoJSON", "Cheetah", "CryptoKitten"]),
+        .target(name: "MongoKitten", dependencies: ["BSON", "GeoJSON", "MongoSocket", "ExtendedJSON", "Schrodinger"])
+        ]
+
 )
 
 // Provides Sockets + SSL
