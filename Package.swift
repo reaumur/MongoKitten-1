@@ -3,6 +3,9 @@ import PackageDescription
 
 var package = Package(
     name: "MongoKitten",
+    products: [
+        .library(name: "MongoKitten", targets: ["MongoKitten"]),
+    ],
     dependencies: [
         // For MongoDB Documents
         .package(url: "https://github.com/GregPerez83/BSON.git", .upToNextMinor(from: "5.3.0")),
